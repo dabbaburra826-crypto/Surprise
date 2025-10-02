@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Animation for Chinnari</title>
+<style>
+body, html {margin:0; padding:0; overflow:hidden; font-family:'Georgia', serif;}
+#blackScreen, #swirls, #forChinnari, #tapMessage, #burningPaper, #finalTap, #cakeScreen {position:absolute; top:0; left:0; width:100%; height:100%; display:flex; justify-content:center; align-items:center; transition: all 1s ease;}
+.hidden {opacity:0; pointer-events:none;}
+.visible {opacity:1; pointer-events:auto;}
+#blackScreen {background:black; z-index:0;}
+#swirls {font-size:4em; color:gold; z-index:1;}
+#forChinnari {font-size:4em; color:#FFD166; z-index:2;}
+#tapMessage, #finalTap {font-size:2em; color:#FFD166; cursor:pointer; z-index:3;}
+#burningPaper {background:#FDF5E6; width:60%; height:60%; box-shadow:0 0 20px rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; flex-direction:column; padding:20px; z-index:4;}
+.letterLine {opacity:0; font-size:1.5em; color:#8B4513; line-height:2em;}
+#cakeScreen {background:white; flex-direction:column; align-items:center; z-index:5;}
+.cakeLayer {width:300px; height:80px; background:#FFD166; border-radius:15px; margin:5px 0; opacity:0; transform: translateY(-200px); box-shadow:0 0 20px rgba(0,0,0,0.2);}
+#middleLayer {width:220px; height:70px; background:#F4A261;}
+#topLayer {width:150px; height:60px; background:#E76F51;}
+#happyMessage {position:absolute; top:-100px; font-size:2em; font-weight:bold; color:#FFD166; opacity:0;}
+.sparkle {position:absolute; width:10px; height:10px; background:gold; border-radius:50%; opacity:0;}
+</style>
+</head>
+<body>
+
+<div id="blackScreen" class="visible"></div>
+<div id="swirls" class="hidden">✨✨✨</div>
+<div id="forChinnari" class="hidden">For Chinnari</div>
+<div id="tapMessage" class="hidden">Tap to see what's next</div>
+<div id="burningPaper" class="hidden"></div>
+<div id="finalTap" class="hidden">Tap to see what's next</div>
+<div id="cakeScreen" class="hidden">
+  <div id="bottomLayer" class="cakeLayer"></div>
+  <div id="middleLayer" class="cakeLayer"></div>
+  <div id="topLayer" class="cakeLayer"></div>
+  <div id="happyMessage">Happy Birthday Chinnari! 🎉</div>
+</div>
+
+<script>
+const swirls = document.getElementById('swirls');
+const forChinnari = document.getElementById('forChinnari');
+const tapMessage = document.getElementById('tapMessage');
+const burningPaper = document.getElementById('burningPaper');
+const finalTap = document.getElementById('finalTap');
+const cakeScreen = document.getElementById('cakeScreen');
+const bottom = document.getElementById('bottomLayer');
+const middle = document.getElementById('middleLayer');
+const top = document.getElementById('topLayer');
+const message = document.getElementById('happyMessage');
+
+setTimeout(()=>{ swirls.classList.add('visible'); },1000);
+setTimeout(()=>{
+    forChinnari.classList.add('visible');
+    document.getElementById('blackScreen').style.background='white';
+},4000);
+setTimeout(()=>{ tapMessage.classList.add('visible'); },7000);
+
+tapMessage.addEventListener('click',()=>{
+    tapMessage.classList.remove('visible');
+    burningPaper.classList.add('visible');
+    const letterLines = [
+        'To my beloved wife,',
+        'Across the endless skies and oceans wide, my heart has always found its way to you.',
+        'Your laughter is the song of hidden stars,',
+        'and your eyes hold the magic of a thousand worlds.',
+        'Though miles separate us,',
+        'distance cannot diminish the bond we share.',
+        'Every beat of my heart whispers your name,',
+        'every breath carries my love across realms to you.',
+        'Forever entwined by destiny, magic, and love,',
+        'Dhanush'
+    ];
+    letterLines.forEach((line,i)=>{
+        const p = document.createElement('div');
+        p.className='letterLine';
+        p.textContent=line;
+        burningPaper.appendChild(p);
+        setTimeout(()=>{p.style.opacity=1;}, i*2000);
+    });
+    setTimeout(()=>{ finalTap.classList.add('visible'); }, letterLines.length*2000 + 1000);
+});
+
+finalTap.addEventListener('click',()=>{
+    burningPaper.classList.remove('visible');
+    finalTap.classList.remove('visible');
+    cakeScreen.classList.add('visible');
+    function animateLayer(layer, delay){
+        setTimeout(()=>{
+            layer.style.transition='all 1s ease';
+            layer.style.opacity=1;
+            layer.style.transform='translateY(0)';
+        }, delay);
+    }
+    animateLayer(bottom,500);
+    animateLayer(middle,2000);
+    animateLayer(top,3500);
+    setTimeout(()=>{
+        message.style.transition='all 1s ease';
+        message.style.opacity=1;
+        for(let i=0;i<30;i++){
+            const sparkle=document.createElement('div');
+            sparkle.className='sparkle';
+            sparkle.style.left=Math.random()*window.innerWidth+'px';
+            sparkle.style.top=Math.random()*window.innerHeight+'px';
+            document.body.appendChild(sparkle);
+            setTimeout(()=>{sparkle.style.opacity=1; sparkle.style.transition='opacity 1s ease';},100);
+            setTimeout(()=>{sparkle.style.opacity=0;},2000+Math.random()*1000);
+        }
+    },5000);
+});
+</script>
+
+</body>
+</html>
